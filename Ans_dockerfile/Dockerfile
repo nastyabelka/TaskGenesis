@@ -7,9 +7,8 @@ LABEL maintainer="Anastasiia_Biloshytska"
 LABEL ansible_version=${ANSIBLE_VERSION}
 LABEL aws_cli_version=${AWSCLI_VERSION}
 
-RUN mkdir /data \
-    mkdir /data/a_roles \
-    mkdir /data/key_ssh
+RUN mkdir ./a_roles \
+    mkdir ./key_ssh
 WORKDIR /data
 
 
@@ -18,6 +17,6 @@ RUN apt-get update \
     && apt-get install -y ansible curl python3 python3-pip python3-boto unzip  \
     && pip3 install --upgrade awscli==${AWSCLI_VERSION} 
 
-RUN echo 'arun="ansible run"' >> ~/.bashrc
+RUN echo 'alias arun="ansible run"' >> ~/.bashrc
 
 CMD ["/bin/bash"]

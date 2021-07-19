@@ -12,22 +12,21 @@ RUN mkdir ./ter_template \
 WORKDIR /data
 
 
-ENV DEBIAN_FRONTEND=noninteractive
 ENV AWSCLI_VERSION=${AWSCLI_VERSION}
 ENV TERRAFORM_VERSION=${TERRAFORM_VERSION}
 
 RUN apt update \
     && apt list --upgradable \
-    && apt install python3-pip \
+    && apt-get install -y curl python3 python3-pip python3-boto unzip  \
     && pip3 install --upgrade awscli==${AWSCLI_VERSION} \
     && curl -LO https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
-    && chmod 777 '*.zip' \
     && unzip '*.zip' -d /usr/local/bin \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* *.zip
 
-RUN echo 'tin="terraform init"' >> ~/.bashrc \
-    echo 'tplan="terraform plan"' >> ~/.bashrc \
-    echo 'tapp="terraform apply"' >> ~/.bashrc 
+RUN echo 'alias tin="terraform init" \
+          alias tplan="terraform plan" \
+          alias tapp="terraform apply"' >> ~/.bashrc 
+
 
 CMD    ["/bin/bash"]
